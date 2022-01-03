@@ -1,0 +1,374 @@
+---
+title: "LUXGEN Dashboard"
+#author: "Quiny Hsieh"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    #css: styles.css
+    social: menu
+    #source_code: embed
+    theme: spacelab
+    logo: data/Luxgen-logo.png
+    favicon: data/Luxgen-logo.png
+    navbar:
+      - { title: "About LUXGEN Motor Co., Ltd.", href: "https://www.luxgen-motor.com.tw", target: _blank }
+    #storyboard: true
+    #smooth_scroll: true 
+    #http://ri-wu.com/wp-content/uploads/2016/12/KV-2.jpg 
+    #http://ri-wu.com/wp-content/uploads/2016/12/1-1.jpg
+    #runtime: shiny
+
+---
+
+```{r global, include=FALSE}
+library(flexdashboard)
+library(highcharter)
+#library(readxl)
+library(tidyverse)
+library(xts)
+library(rmarkdown)
+library(feather)
+#library(readr)
+
+
+#=======================feather========================
+# df_1 <- read_excel("data/car_data.xlsx", sheet = 4) %>% as.data.frame()
+# write_feather(df_1, "df1.feather")
+
+df_1 <- read_feather("df1.feather") %>% as.data.frame() %>%
+        mutate(month = as.Date(paste(.$month, 1, sep = "/"), format = "%Y/%m/%d")) %>%
+        xts(x = .[, -1], order.by = .[, 1])
+
+#=========================csv==========================
+# df_1 <- read_excel("data/car_data.xlsx", sheet = 4) %>% as.data.frame()
+# write_csv(df_1, "df1.csv")
+# 
+# df_1 <- read_csv("df1.csv") %>% as.data.frame() %>%
+#         mutate(month = as.Date(paste(.$month, 1, sep = "/"), format = "%Y/%m/%d")) %>%
+#         xts(x = .[, -1], order.by = .[, 1])
+
+
+#=======================feather========================
+# df_2 <- read_excel("data/car_data.xlsx", sheet = 5) %>%
+#        data.frame(stringsAsFactors = FALSE)
+# write_feather(df_2, "df2.feather")
+
+df_2 <- read_feather("df2.feather") %>% data.frame(stringsAsFactors = FALSE)
+
+#=========================csv==========================
+# df_2 <- read_excel("data/car_data.xlsx", sheet = 5) %>%
+#        data.frame(stringsAsFactors = FALSE)
+# write_csv(df_2, "df2.csv")
+# 
+# df_2 <- read_csv("df2.csv") %>% data.frame(stringsAsFactors = FALSE) 
+
+
+#=======================feather========================
+# df_3 <- read_excel("data/car_data.xlsx", sheet = 6) %>%
+#        data.frame(stringsAsFactors = FALSE) %>%
+#        mutate(year = as.character(year))
+# write_feather(df_3, "df3.feather")
+
+df_3 <- read_feather("df3.feather") %>% data.frame(stringsAsFactors = FALSE) %>%
+        mutate(year = as.character(year))
+
+#=========================csv==========================
+# df_3 <- read_excel("data/car_data.xlsx", sheet = 6) %>%
+#   data.frame(stringsAsFactors = FALSE) %>%
+#   mutate(year = as.character(year))
+# write_csv(df_3, "df3.csv")
+# df_3 <- read_csv("df3.csv") %>% data.frame(stringsAsFactors = FALSE) %>%
+#         mutate(year = as.character(year))
+
+
+#=======================feather========================
+# df_4 <- read_excel("data/car_data.xlsx", sheet = 7) %>%
+#        data.frame(stringsAsFactors = FALSE)
+# write_feather(df_4, "df4.feather")
+
+df_4 <- read_feather("df4.feather") %>% data.frame(stringsAsFactors = FALSE)
+
+#=========================csv==========================
+# df_4 <- read_excel("data/car_data.xlsx", sheet = 7) %>%
+#        data.frame(stringsAsFactors = FALSE)
+# write_csv(df_4, "df4.csv")
+# df_4 <- read_csv("df4.csv") %>% data.frame(stringsAsFactors = FALSE)
+
+model <- aggregate(df_2$sales, by = list(category = df_2$category), FUN = sum) %>% 
+         setNames(c("category", "sales")) %>% 
+         mutate(drilldown = tolower(category))
+
+df_suv <- df_2 %>% filter(category == "SUV") %>% 
+  select(c(model, sales))
+
+df_mpv <- df_2 %>% filter(category == "MPV") %>%
+  select(c(model, sales))
+
+df_seden <- df_2 %>% filter(category == "Seden") %>% 
+  select(c(model, sales))
+
+
+second_el_to_numeric <- function(ls){
+  map(ls, function(x){
+    x[[2]] <- as.numeric(x[[2]])
+    return(x)
+  })
+}
+df_suv <- second_el_to_numeric(list_parse2(df_suv))
+df_mpv <- second_el_to_numeric(list_parse2(df_mpv))
+df_seden <- second_el_to_numeric(list_parse2(df_seden))
+
+# Make some noisily increasing data
+# set.seed(955)
+# dat <- data.frame(cond = rep(c("A", "B"), each=10),
+#                   xvar = 1:20 + rnorm(20,sd=3),
+#                   yvar = 1:20 + rnorm(20,sd=3))
+```
+Sales Information {data-icon="fa-chart-bar"}
+=======================================================================
+
+<!-- Row -->
+<!-- ----------------------------------------------------------------------- -->
+
+<!-- ### M7 {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$L92[nrow(df_1)], -->
+<!--          caption = "M7/V7 sales in Dec.", -->
+<!--          icon = "fas fa-truck-moving", -->
+<!--          tags$head(tags$style(HTML(".small-box {height: 10}"))), -->
+<!--          color = "") -->
+<!-- ``` -->
+
+<!-- ### U7 {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$G92[nrow(df_1)], -->
+<!--          caption = "U7 sales in Dec.", -->
+<!--          icon = "fas fa-truck", -->
+<!--          color = "") -->
+<!-- ``` -->
+
+<!-- ### S5 {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$S71[nrow(df_1)], -->
+<!--          caption = "S5 GT/GT225 sales in Dec.", -->
+<!--          icon = "fas fa-car", -->
+<!--          color = "") -->
+<!-- ``` -->
+
+<!-- ### U6 {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$C71[nrow(df_1)], -->
+<!--          caption = "U6 GT/GT220 sales in Dec.", -->
+<!--          icon = "fas fa-truck", -->
+<!--          color = "") -->
+<!-- ``` -->
+
+<!-- ### URX {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$L71[nrow(df_1)], -->
+<!--          caption = "URX sales in Dec.", -->
+<!--          icon = "fas fa-truck", -->
+<!--          color = "") -->
+<!-- ``` -->
+
+Row
+-----------------------------------------------------------------------
+
+### Monthly Model Sales Trend 
+
+```{r}
+highchart(type = "stock") %>% 
+  hc_yAxis(opposite = FALSE, title = list(text = "Total sales (units)"), min = 0) %>% 
+  hc_xAxis(categories = df_1$month) %>% 
+  hc_tooltip(shared = TRUE, split = FALSE, borderWidth = 1, crosshair = TRUE) %>%  
+  #hc_add_series(name = "L91", data = df_1$L91, visible = FALSE) %>%
+  hc_add_series(name = "L92", id = "l92", data = df_1$L92, type = "spline") %>%
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2014-05-01", "2015-06-01"), format = "%Y-%m-%d"),
+                      title = c("M7 Turbo", "M7 Turbo Eco Hyper"),
+                      text = c("STC", "STC"),
+                      id = 'l92', shape = 'squarepin', showInLegend = FALSE) %>% 
+  #hc_add_series(name = "G91", data = df_1$G91, visible = FALSE) %>% 
+  hc_add_series(name = "G92", id = "g92", data = df_1$G92, type = "spline") %>% 
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2013-09-01", "2015-07-01"), format = "%Y-%m-%d"),
+                      title = c("U7 Turbo", "U7 Turbo Eco Hyper"),
+                      text = c("STC", "STC"),
+                      id = 'g92', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(name = "S71", id = "s71", data = df_1$S71, type = "spline") %>% 
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2013-12-01", "2015-10-01", "2019-05-01"), format = "%Y-%m-%d"),
+                      title = c("S5 Turbo", "S5 Turbo Eco Hyper", "S5 GT/GT225"),
+                      text = c("STC", "STC", "STC"),
+                      id = 's71', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(name = "C71", id = "c71", data = df_1$C71, type = "spline") %>% 
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2013-11-01", "2015-04-01", "2017-10-01"), format = "%Y-%m-%d"),
+                      title = c("U6 Turbo", "U6 Turbo Eco Hyper", "U6 GT/GT225"),
+                      text = c("STC", "STC", "STC"),
+                      id = 'c71', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(name = "S61", id = "s61", data = df_1$S61, type = "spline") %>% 
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2016-05-01"), format = "%Y-%m-%d"),
+                      title = c("Luxgen S3"),
+                      text = c("STC"),
+                      id = 's61', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(name = "H61", id = "h61", data = df_1$H61, type = "spline") %>%
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2017-08-01"), format = "%Y-%m-%d"),
+                      title = c("Luxgen U5"),
+                      text = c("STC"),
+                      id = 'h61', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(name = "L71", id = "l71", data = df_1$L71, color = "orange", type = "spline") %>%
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("2019-12-01"), format = "%Y-%m-%d"),
+                      title = c("Luxgen URX"),
+                      text = c("STC"),
+                      id = 'l71', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_legend(enabled = TRUE) %>% 
+  hc_rangeSelector(buttons = list(list(type = 'month', count = 6, text = '6m'),
+                                  list(type = 'month', count = 12, text = '12m'),
+                                  list(type = 'month', count = 18, text = '18m'),
+                                  list(type = 'month', count = 24, text = '24m'),
+                                  list(type = 'month', count = 30, text = '30m'),
+                                  list(type = 'all', text = 'All')), selected = 1) %>% 
+  hc_navigator(enabled = FALSE)
+```
+
+
+### Comparison of Annual Model Sales
+
+```{r}
+# highchart() %>%
+#   hc_add_series(df2, hcaes(x = model, y = units, group = year), type = "column") %>%
+#   hc_chart(type = "column", options3d = list(enabled = TRUE, beta = 20
+#                                    , alpha = 30
+#                                    , depth = 400
+#                                    , viewDistance = 5))
+
+# highchart() %>%
+#   hc_chart(type = "column") %>% 
+#   hc_title(text = 'Monthly Average Rainfall') %>% 
+#   hc_subtitle(text = 'Source: WorldClimate.com') %>% 
+#   #hc_xAxis(category = df2$year, crosshair = TRUE) %>%
+#   hc_tooltip(headerFormat = '<span style="font-size:10px">{point.key}</span><table>',
+#              pointFormat = '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.0f} units</b></td></tr>',
+#              footerFormat = '</table>',
+#              shared = T,
+#              useHTML = T) %>% 
+#   hc_plotOptions(column = list(pointPadding = 0.2, borderWidth = 0)) %>% 
+#   hc_add_series(df2, hcaes(x = model, y = units, group = year), type = "column")
+
+highchart() %>%
+  hc_chart(type = "column") %>%
+  #hc_title(text = 'Stacked column chart') %>% 
+  hc_xAxis(categories = df_3$year, crosshair = TRUE) %>%
+  hc_yAxis(min = 0, title = list(text = "Total sales (units)"),
+          stackLabels = list(enabled = TRUE, style = list(fontWeight = 'bold', color = "gray"))) %>%
+  hc_legend(verticalAlign = "bottom", floating = FALSE, #align = "middle"
+            backgroundColor = "white", borderColor = '#CCC',
+            borderWidth = 0, shadow = FALSE) %>% 
+  hc_tooltip(headerFormat = '<b>{point.x}</b><br/>', 
+             #pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.1f}%)<br/>, 
+             #shared = TRUE, crosshairs = TRUE 
+             pointFormat ='{series.name}: {point.y}<br/> Prop.: <b>{point.percentage:.1f}%</b>')%>%
+  hc_plotOptions(column = list(stacking = 'normal', dataLabels = list(enabled = FALSE))) %>% 
+  hc_add_series(name = "L91", data = df_3$L91) %>%
+  hc_add_series(name = "L92", data = df_3$L92) %>%
+  hc_add_series(name = "G91", data = df_3$G91) %>% 
+  hc_add_series(name = "G92", data = df_3$G92) %>%
+  hc_add_series(name = "S71", data = df_3$S71) %>%
+  hc_add_series(name = "C71", data = df_3$C71) %>%
+  hc_add_series(name = "S61", data = df_3$S61) %>%
+  #hc_add_theme(hc_theme_gridlight()) %>% 
+  hc_add_series(name = "H61", data = df_3$H61) %>% 
+  hc_add_series(name = "L71", data = df_3$L71) 
+  # hc_chart(style = list(fontWeight = "bold"))
+  # hc_chart(type = "column", options3d = list(enabled = TRUE, beta = 20
+  #                                  , alpha = 30
+  #                                  , depth = 400
+  #                                  , viewDistance = 5))
+
+#hchart(df2, "column", hcaes(x = model, y = units, group = year)) 
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Overall Proportion of Model Sales
+
+```{r}
+highchart() %>% 
+  hc_chart(options3d = list(enabled = TRUE, alpha = 45)) %>% 
+  #hc_accessibility(point = list(valueSuffix = '%')) %>% 
+  #hc_title(text = "Model Proportion") %>%
+  hc_xAxis(type = "category") %>%
+  hc_plotOptions(series = list(boderWidth = 0, dataLabels = list(enabled = TRUE, 
+                                                                 format = '<b>{point.name}</b>',
+                                                                 connectorColor = "silver"), 
+                               showInLegend = TRUE, allowPointSelect = TRUE, cursor = 'pointer')) %>%
+  hc_add_series(name = "Models Proportion", colorByPoint = TRUE, data = model,
+                hcaes(x = category, y = sales), innerSize = "45%", size ='75%', type = "pie", depth = 45) %>% 
+  hc_drilldown(allowPointDrilldown = TRUE, series = list(
+    list(id = "suv", data = df_suv, innerSize = '45%', size ='75%', type = "pie", depth = 45),
+    list(id = "mpv",data = df_mpv, innerSize ='45%', size ='75%', type = "pie", depth = 45),
+    list(id = "seden", data = df_seden, innerSize ='45%', size ='75%', type = "pie", depth = 45))) %>% 
+  hc_tooltip(headerFormat = '<b>{point.x}</b><br/>',
+             pointFormat = paste('{point.y} uints <br/><b>{point.percentage:.1f} %</b>')) %>%
+  hc_add_theme(hc_theme_gridlight()) %>% 
+  hc_subtitle(text = paste("Cumulative number of sales until December 2021."), align = 'left') 
+  #hc_legend(enabled = TRUE)
+```
+
+### Changes in Annual Sales and Market Share
+
+```{r}
+# highchart() %>%
+#   hc_chart(type = "packedbubble", height = '100%') %>%
+#   hc_title(text = 'Carbon emissions around the world (2014)') %>%
+#   hc_tooltip(useHTML = TRUE, pointFormat = '<b>{point.name}:</b> {point.value}m CO<sub>2</sub>') %>%
+#   hc_plotOptions(packedbubble = list(minSize = '30%',
+#                                      maxSize = '120%',
+#                                      zMin = 0,
+#                                      zMax = 1000,
+#                                      layoutAlgorithm = list(splitSeries = FALSE,
+#                                                             gravitationalConstant = 0.02),
+#                                      dataLabels = list(enabled = TRUE,
+#                                                        format = '{point.name}',
+#                                                        filter = list(property = 'y', operator = '>', value = 250),
+#                                                        style = list(color = 'black', textOutline = 'none', fontWeight = 'normal')))) %>%
+# hc_add_series(name = 'Europe', data = data.frame(name = c('Germany', 'Croatia', "Belgium", "Czech Republic", "Netherlands", "Spain", "Ukraine", 
+#                                                           "Poland", "France","Romania", "United Kingdom", "Turkey", "Italy", "Greece",  "Austria", 
+#                                                           "Belarus", "Serbia", "Finland", "Bulgaria", "Portugal", "Norway", "Sweden", "Hungary",
+#                                                           "Switzerland", "Denmark", "Slovakia", "Ireland", "Croatia", "Estonia", "Slovenia", "Lithuania",
+#                                                           "Luxembourg", "Macedonia", "Moldova", "Latvia", "Cyprus"), 
+#                                                  value = c(267.1, 20.7, 97.2, 111.7, 158.1, 241.6, 249.1, 298.1, 78.3, 415.4, 
+#                                                            353.2, 337.6, 71.1, 69.8, 67.7, 59.3, 54.8, 51.2, 48.3, 44.4, 44.3, 
+#                                                            43.7, 40.2, 40, 34.7, 34.6, 20.7, 19.4, 16.7, 12.3, 10.4, 9.5, 7.8, 7.5, 7.2, 53))) %>% 
+# hc_add_series(name = 'Asia', data = data.frame(name = c('Germany', "Eygpt"), value = c(267.1, 20.7))) 
+
+highchart() %>% 
+  hc_chart(type = "spline") %>%
+  #hc_legend(symbolWidth = 40) %>% 
+  #hc_title(text = 'Most common desktop screen readers') %>% 
+  #hc_subtitle(text = paste('Cumulative number of sales until November, 2019.'), align = 'left') %>% 
+  hc_yAxis_multiples(list(lineWidth = 0, opposite = TRUE, max = 25, title = list(text = 'Market share')),
+                     list(showLastLabel = FALSE, lineWidth = 0, title = list(text = 'Total sales (units)'), min = 0)) %>%
+  hc_xAxis(crosshair = TRUE, categories = c(df_4$yearly)) %>% 
+  #hc_tooltip(valueSuffix = 'units') %>% 
+  hc_tooltip(shared = TRUE, headerFormat = '<b>{point.x}</b><br/>') %>% 
+  # hc_plotOptions(series = list(point = list(events = list(click = function() {window.location.href = this.series.options.website})),
+  #                              cursor = 'pointer')) %>%
+  hc_add_series(name = "Luxgen", data = df_4$LUXGEN, yAxis = 1) %>% 
+  hc_add_series(name = "Nissan", data = df_4$NISSAN, dashStyle = 'ShortDashDot', yAxis = 1) %>% 
+  hc_add_series(name = "Mitsubishi", data = df_4$MITSUBISHI, dashStyle = 'ShortDot', yAxis = 1) %>% 
+  #hc_add_theme(hc_theme_smpl()) %>% 
+  hc_add_series(name = "Luxgen TW market share", data = round(df_4$LUXGEN.Market.share, 2), 
+                dashStyle = 'Dash', tooltip = list(valueSuffix = " %"), type = "column")
+```

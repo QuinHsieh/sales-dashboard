@@ -1,0 +1,9 @@
+{
+    "path" : "~/sales-dashboard",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
