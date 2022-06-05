@@ -128,8 +128,8 @@ df_seden <- second_el_to_numeric(list_parse2(df_seden))
 Sales Information {data-icon="fa-chart-bar"}
 =======================================================================
 
-<!-- Row -->
-<!-- ----------------------------------------------------------------------- -->
+Row
+-----------------------------------------------------------------------
 
 <!-- ### M7 {.value-box} -->
 
@@ -159,23 +159,32 @@ Sales Information {data-icon="fa-chart-bar"}
 <!--          color = "") -->
 <!-- ``` -->
 
-<!-- ### U6 {.value-box} -->
+### YOY {.value-box}
 
-<!-- ```{r} -->
-<!-- valueBox(value = df_1$C71[nrow(df_1)], -->
-<!--          caption = "U6 GT/GT220 sales in Dec.", -->
-<!--          icon = "fas fa-truck", -->
-<!--          color = "") -->
-<!-- ``` -->
+```{r}
+valueBox(value = paste(df_1$diff[nrow(df_1)] * 100, "%"),
+         caption = "YOY Total Sales in MAY",
+         icon = "fas fa-chart-line",
+         color = "")
+```
 
-<!-- ### URX {.value-box} -->
+### U6 {.value-box}
 
-<!-- ```{r} -->
-<!-- valueBox(value = df_1$L71[nrow(df_1)], -->
-<!--          caption = "URX sales in Dec.", -->
-<!--          icon = "fas fa-truck", -->
-<!--          color = "") -->
-<!-- ``` -->
+```{r}
+valueBox(value = df_1$C71[nrow(df_1)],
+         caption = "U6 GT/GT220 sales in MAY",
+         icon = "fas fa-car",
+         color = "")
+```
+
+### URX {.value-box}
+
+```{r}
+valueBox(value = df_1$L71[nrow(df_1)],
+         caption = "URX sales in MAY",
+         icon = "fas fa-truck",
+         color = "")
+```
 
 Row
 -----------------------------------------------------------------------
@@ -322,7 +331,7 @@ highchart() %>%
   hc_tooltip(headerFormat = '<b>{point.x}</b><br/>',
              pointFormat = paste('{point.y} uints <br/><b>{point.percentage:.1f} %</b>')) %>%
   hc_add_theme(hc_theme_gridlight()) %>% 
-  hc_subtitle(text = paste("Cumulative number of sales until APR. 2022."), align = 'left') 
+  hc_subtitle(text = paste("Cumulative number of sales until MAY 2022."), align = 'left') 
   #hc_legend(enabled = TRUE)
 ```
 
