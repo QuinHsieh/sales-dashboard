@@ -128,8 +128,8 @@ df_seden <- second_el_to_numeric(list_parse2(df_seden))
 Sales Information {data-icon="fa-chart-bar"}
 =======================================================================
 
-Row
------------------------------------------------------------------------
+<!-- Row -->
+<!-- ----------------------------------------------------------------------- -->
 
 <!-- ### M7 {.value-box} -->
 
@@ -159,32 +159,32 @@ Row
 <!--          color = "") -->
 <!-- ``` -->
 
-### YOY {.value-box}
+<!-- ### YOY {.value-box} -->
 
-```{r}
-valueBox(value = paste(df_1$diff[nrow(df_1)] * 100, "%"),
-         caption = "YOY Total Sales in MAY",
-         icon = "fas fa-chart-line",
-         color = "")
-```
+<!-- ```{r} -->
+<!-- valueBox(value = paste(df_1$diff[nrow(df_1)] * 100, "%"), -->
+<!--          caption = "YOY Total Sales in MAY", -->
+<!--          icon = "fas fa-chart-line", -->
+<!--          color = "") -->
+<!-- ``` -->
 
-### U6 {.value-box}
+<!-- ### U6 {.value-box} -->
 
-```{r}
-valueBox(value = df_1$C71[nrow(df_1)],
-         caption = "U6 GT/GT220 sales in MAY",
-         icon = "fas fa-car",
-         color = "")
-```
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$C71[nrow(df_1)], -->
+<!--          caption = "U6 GT/GT220 sales in MAY", -->
+<!--          icon = "fas fa-car", -->
+<!--          color = "") -->
+<!-- ``` -->
 
-### URX {.value-box}
+<!-- ### URX {.value-box} -->
 
-```{r}
-valueBox(value = df_1$L71[nrow(df_1)],
-         caption = "URX sales in MAY",
-         icon = "fas fa-truck",
-         color = "")
-```
+<!-- ```{r} -->
+<!-- valueBox(value = df_1$L71[nrow(df_1)], -->
+<!--          caption = "URX sales in MAY", -->
+<!--          icon = "fas fa-truck", -->
+<!--          color = "") -->
+<!-- ``` -->
 
 Row
 -----------------------------------------------------------------------
