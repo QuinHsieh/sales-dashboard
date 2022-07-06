@@ -331,7 +331,7 @@ highchart() %>%
   hc_tooltip(headerFormat = '<b>{point.x}</b><br/>',
              pointFormat = paste('{point.y} uints <br/><b>{point.percentage:.1f} %</b>')) %>%
   hc_add_theme(hc_theme_gridlight()) %>% 
-  hc_subtitle(text = paste("Cumulative number of sales until MAY 2022."), align = 'left') 
+  hc_subtitle(text = paste("Cumulative number of sales until JUN 2022."), align = 'left') 
   #hc_legend(enabled = TRUE)
 ```
 
