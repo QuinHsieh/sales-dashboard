@@ -11,7 +11,7 @@ output:
     theme: cerulean
     #cerulean.spacelab.united
     logo: data/Luxgen_logo_white_adj.png
-    favicon: data/Luxgen_logo_black_adj.png
+    favicon: data/Luxgen_logo_white_adj.png
     navbar:
       - { title: "About LUXGEN Motor Co., Ltd.", href: "https://www.luxgen-motor.com.tw", target: _blank }
     #storyboard: true
