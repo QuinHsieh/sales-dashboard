@@ -1,16 +1,17 @@
 ---
-title: "LUXGEN Dashboard"
-#author: "Quiny Hsieh"
+title: "Model Dashboard"
+author: "Quiny Hsieh"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
     #css: styles.css
-    social: menu
+    social: darkly
     #source_code: embed
-    theme: spacelab
-    logo: data/Luxgen-logo.png
-    favicon: data/Luxgen-logo.png
+    theme: cerulean
+    #cerulean.spacelab.united
+    logo: data/Luxgen_logo_white_adj.png
+    favicon: data/Luxgen_logo_black_adj.png
     navbar:
       - { title: "About LUXGEN Motor Co., Ltd.", href: "https://www.luxgen-motor.com.tw", target: _blank }
     #storyboard: true
@@ -189,7 +190,7 @@ Sales Information {data-icon="fa-chart-bar"}
 Row
 -----------------------------------------------------------------------
 
-### Monthly Model Sales Trend 
+### Monthly Sales Trends for Model
 
 ```{r}
 highchart(type = "stock") %>% 
@@ -239,7 +240,13 @@ highchart(type = "stock") %>%
                       dates = as.Date(c("2019-12-01"), format = "%Y-%m-%d"),
                       title = c("Luxgen URX"),
                       text = c("STC"),
-                      id = 'l71', shape = 'squarepin', showInLegend = FALSE) %>% 
+                      id = 'l71', shape = 'squarepin', showInLegend = FALSE) %>%
+  hc_add_series(name = "D31", id = "D31", data = df_1$D31, color = "mediumpurple", type = "spline") %>%
+  hc_add_series_flags(type = "flags", 
+                      dates = as.Date(c("TBD"), format = "%Y-%m-%d"),
+                      title = c("Luxgen N7"),
+                      text = c("STC"),
+                      id = 'D31', shape = 'squarepin', showInLegend = FALSE) %>% 
   hc_legend(enabled = TRUE) %>% 
   hc_rangeSelector(buttons = list(list(type = 'month', count = 6, text = '6m'),
                                   list(type = 'month', count = 12, text = '12m'),
@@ -297,7 +304,8 @@ highchart() %>%
   hc_add_series(name = "S61", data = df_3$S61) %>%
   #hc_add_theme(hc_theme_gridlight()) %>% 
   hc_add_series(name = "H61", data = df_3$H61) %>% 
-  hc_add_series(name = "L71", data = df_3$L71) 
+  hc_add_series(name = "L71", data = df_3$L71) %>% 
+  hc_add_series(name = "D31", data = df_3$D31) 
   # hc_chart(style = list(fontWeight = "bold"))
   # hc_chart(type = "column", options3d = list(enabled = TRUE, beta = 20
   #                                  , alpha = 30
@@ -331,7 +339,7 @@ highchart() %>%
   hc_tooltip(headerFormat = '<b>{point.x}</b><br/>',
              pointFormat = paste('{point.y} uints <br/><b>{point.percentage:.1f} %</b>')) %>%
   hc_add_theme(hc_theme_gridlight()) %>% 
-  hc_subtitle(text = paste("Cumulative number of sales until FEB 2023."), align = 'left') 
+  hc_subtitle(text = paste("Cumulative number of sales until Jan. 2024"), align = 'left') 
   #hc_legend(enabled = TRUE)
 ```
 
@@ -377,7 +385,8 @@ highchart() %>%
   hc_add_series(name = "Luxgen", data = df_4$LUXGEN, yAxis = 1) %>% 
   hc_add_series(name = "Nissan", data = df_4$NISSAN, dashStyle = 'ShortDashDot', yAxis = 1) %>% 
   hc_add_series(name = "Mitsubishi", data = df_4$MITSUBISHI, dashStyle = 'ShortDot', yAxis = 1) %>% 
+  hc_add_series(name = "MG", data = df_4$MG, dashStyle = 'ShortDot', yAxis = 1) %>% 
   #hc_add_theme(hc_theme_smpl()) %>% 
   hc_add_series(name = "Luxgen TW market share", data = round(df_4$LUXGEN.Market.share, 2), 
-                dashStyle = 'Dash', tooltip = list(valueSuffix = " %"), type = "column")
+                dashStyle = 'Dash', tooltip = list(valueSuffix = " %"), type = "column", color = "gold")
 ```
