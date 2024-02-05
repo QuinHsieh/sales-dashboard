@@ -193,67 +193,77 @@ Row
 ### Monthly Sales Trends for Model
 
 ```{r}
+
+data_flags_l92 <- tibble(date = as.Date(c("2014-05-01", "2015-06-01"), format = "%Y-%m-%d"),
+                         title = c("M7 Turbo", "M7 Turbo Eco Hyper"),
+                         text = c("STC", "STC"))
+
+data_flags_g92 <- tibble(date = as.Date(c("2013-09-01", "2015-07-01"), format = "%Y-%m-%d"),
+                         title = c("U7 Turbo", "U7 Turbo Eco Hyper"),
+                         text = c("STC", "STC"))
+
+data_flags_s71 <- tibble(date = as.Date(c("2013-12-01", "2015-10-01", "2019-05-01"), format = "%Y-%m-%d"),
+                         title = c("S5 Turbo", "S5 Turbo Eco Hyper", "S5 GT/GT225"),
+                         text = c("STC", "STC", "STC"))
+
+data_flags_c71 <- tibble(date = as.Date(c("2013-11-01", "2015-04-01", "2017-10-01"), format = "%Y-%m-%d"),
+                         title = c("U6 Turbo", "U6 Turbo Eco Hyper", "U6 GT/GT225"),
+                         text = c("STC", "STC", "STC"))
+
+data_flags_s61 <- tibble(date = as.Date(c("2016-05-01"), format = "%Y-%m-%d"),
+                         title = c("S3"),
+                         text = c("STC"))
+
+data_flags_h61 <- tibble(date = as.Date(c("2017-08-01"), format = "%Y-%m-%d"),
+                         title = c("U5"),
+                         text = c("STC"))
+
+data_flags_l71 <- tibble(date = as.Date(c("2019-12-01"), format = "%Y-%m-%d"),
+                         title = c("URX"),
+                         text = c("STC"))
+
+data_flags_d31 <- tibble(date = as.Date(c("2024-01-01"), format = "%Y-%m-%d"),
+                         title = c("N7"),
+                         text = c("STC"))
+
+
 highchart(type = "stock") %>% 
   hc_yAxis(opposite = FALSE, title = list(text = "Total sales (units)"), min = 0) %>% 
   hc_xAxis(categories = df_1$month) %>% 
   hc_tooltip(shared = TRUE, split = FALSE, borderWidth = 1, crosshair = TRUE) %>%  
   #hc_add_series(name = "L91", data = df_1$L91, visible = FALSE) %>%
   hc_add_series(name = "L92", id = "l92", data = df_1$L92, type = "spline") %>%
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2014-05-01", "2015-06-01"), format = "%Y-%m-%d"),
-                      title = c("M7 Turbo", "M7 Turbo Eco Hyper"),
-                      text = c("STC", "STC"),
-                      id = 'l92', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_l92, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "l92") %>% 
   #hc_add_series(name = "G91", data = df_1$G91, visible = FALSE) %>% 
   hc_add_series(name = "G92", id = "g92", data = df_1$G92, type = "spline") %>% 
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2013-09-01", "2015-07-01"), format = "%Y-%m-%d"),
-                      title = c("U7 Turbo", "U7 Turbo Eco Hyper"),
-                      text = c("STC", "STC"),
-                      id = 'g92', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_g92, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "g92") %>% 
   hc_add_series(name = "S71", id = "s71", data = df_1$S71, type = "spline") %>% 
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2013-12-01", "2015-10-01", "2019-05-01"), format = "%Y-%m-%d"),
-                      title = c("S5 Turbo", "S5 Turbo Eco Hyper", "S5 GT/GT225"),
-                      text = c("STC", "STC", "STC"),
-                      id = 's71', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_s71, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "s71") %>% 
   hc_add_series(name = "C71", id = "c71", data = df_1$C71, type = "spline") %>% 
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2013-11-01", "2015-04-01", "2017-10-01"), format = "%Y-%m-%d"),
-                      title = c("U6 Turbo", "U6 Turbo Eco Hyper", "U6 GT/GT225"),
-                      text = c("STC", "STC", "STC"),
-                      id = 'c71', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_c71, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "c71") %>% 
   hc_add_series(name = "S61", id = "s61", data = df_1$S61, type = "spline") %>% 
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2016-05-01"), format = "%Y-%m-%d"),
-                      title = c("Luxgen S3"),
-                      text = c("STC"),
-                      id = 's61', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_s61, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "s61") %>% 
   hc_add_series(name = "H61", id = "h61", data = df_1$H61, type = "spline") %>%
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2017-08-01"), format = "%Y-%m-%d"),
-                      title = c("Luxgen U5"),
-                      text = c("STC"),
-                      id = 'h61', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_h61, hcaes(x = date, title = title, text = text), 
+               shape = 'squarepin', showInLegend = FALSE, onSeries = "h61") %>% 
   hc_add_series(name = "L71", id = "l71", data = df_1$L71, color = "orange", type = "spline") %>%
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("2019-12-01"), format = "%Y-%m-%d"),
-                      title = c("Luxgen URX"),
-                      text = c("STC"),
-                      id = 'l71', shape = 'squarepin', showInLegend = FALSE) %>%
-  hc_add_series(name = "D31", id = "D31", data = df_1$D31, color = "mediumpurple", type = "spline") %>%
-  hc_add_series_flags(type = "flags", 
-                      dates = as.Date(c("TBD"), format = "%Y-%m-%d"),
-                      title = c("Luxgen N7"),
-                      text = c("STC"),
-                      id = 'D31', shape = 'squarepin', showInLegend = FALSE) %>% 
+  hc_add_series(type = "flags", data = data_flags_l71, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "l71") %>% 
+  hc_add_series(name = "D31", id = "d31", data = df_1$D31, color = "mediumpurple", type = "spline") %>%
+  hc_add_series(type = "flags", data = data_flags_d31, hcaes(x = date, title = title, text = text), 
+                shape = 'squarepin', showInLegend = FALSE, onSeries = "d31") %>% 
   hc_legend(enabled = TRUE) %>% 
   hc_rangeSelector(buttons = list(list(type = 'month', count = 6, text = '6m'),
                                   list(type = 'month', count = 12, text = '12m'),
                                   list(type = 'month', count = 18, text = '18m'),
                                   list(type = 'month', count = 24, text = '24m'),
                                   list(type = 'month', count = 30, text = '30m'),
-                                  list(type = 'all', text = 'All')), selected = 1) %>% 
+                                  list(type = 'all', text = 'All')), selected = 2) %>% 
   hc_navigator(enabled = FALSE)
 ```
 
