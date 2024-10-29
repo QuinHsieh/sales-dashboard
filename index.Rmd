@@ -106,7 +106,7 @@ df_suv <- df_2 %>% filter(category == "SUV") %>%
 df_mpv <- df_2 %>% filter(category == "MPV") %>%
   select(c(model, sales))
 
-df_seden <- df_2 %>% filter(category == "Seden") %>% 
+df_seden <- df_2 %>% filter(category == "SEDAN") %>% 
   select(c(model, sales))
 
 
@@ -345,11 +345,11 @@ highchart() %>%
   hc_drilldown(allowPointDrilldown = TRUE, series = list(
     list(id = "suv", data = df_suv, innerSize = '45%', size ='75%', type = "pie", depth = 45),
     list(id = "mpv",data = df_mpv, innerSize ='45%', size ='75%', type = "pie", depth = 45),
-    list(id = "seden", data = df_seden, innerSize ='45%', size ='75%', type = "pie", depth = 45))) %>% 
+    list(id = "sedan", data = df_seden, innerSize ='45%', size ='75%', type = "pie", depth = 45))) %>% 
   hc_tooltip(headerFormat = '<b>{point.x}</b><br/>',
              pointFormat = paste('{point.y} uints <br/><b>{point.percentage:.1f} %</b>')) %>%
   hc_add_theme(hc_theme_gridlight()) %>% 
-  hc_subtitle(text = paste("Cumulative number of sales until Jan. 2024"), align = 'left') 
+  hc_subtitle(text = paste("Cumulative number of sales until Sep. 2024"), align = 'left') 
   #hc_legend(enabled = TRUE)
 ```
 
